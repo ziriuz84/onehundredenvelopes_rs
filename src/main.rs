@@ -17,10 +17,10 @@ fn read_extracted_numbers(filename: &str) -> Result<HashSet<String>, io::Error> 
         }
         Err(e) => return Err(e),
     };
-    
+
     let reader = BufReader::new(file);
     let mut numbers = HashSet::new();
-    
+
     for line in reader.lines() {
         let line = line?;
         if !line.trim().is_empty() {
@@ -50,7 +50,7 @@ fn count_extracted_numbers(filename: &str) -> Result<usize, io::Error> {
 fn extract_number(min: i8, max: i8) -> Result<String, io::Error> {
     let mut rng = rand::rng();
     let extracted = read_extracted_numbers("extracted.txt")?;
-    
+
     // Generate numbers until we find one that hasn't been extracted
     loop {
         let num = rng.random_range(min..=max);
@@ -78,17 +78,19 @@ fn main() {
     println!("Select an option:");
     println!("1. Generate a random number between 1 and 49");
     println!("2. Generate a random number between 50 and 100");
-    
+    println!("3. Generate a random number between 1 and 100");
+
     let mut input = String::new();
     if let Err(e) = io::stdin().read_line(&mut input) {
         eprintln!("Error reading input: {}", e);
         exit(1);
     }
-    
+
     let choice = input.trim();
     let number = match choice {
         "1" => extract_number(1, 49),
         "2" => extract_number(50, 100),
+        "3" => extract_number(1, 100),
         _ => {
             println!("Invalid choice. Please select 1 or 2.");
             return;
